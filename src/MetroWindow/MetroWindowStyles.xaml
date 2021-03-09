@@ -5,18 +5,19 @@
     <Style x:Key="CaptionButtonStyle" TargetType="Button">
         <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
         <Setter Property="Foreground" Value="{DynamicResource WindowTextBrush}" />
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Grid x:Name="LayoutRoot" Background="Transparent" Width="44" Height="30">
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="ButtonLayout" Background="Transparent" Width="44" Height="30">
                         <TextBlock x:Name="txt" Text="{TemplateBinding Content}" FontFamily="Segoe MDL2 Assets" FontSize="10" 
                                    Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
                                    RenderOptions.ClearTypeHint="Auto" TextOptions.TextRenderingMode="Aliased"  TextOptions.TextFormattingMode="Display"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="LayoutRoot" Property="Background" Value="#E5E5E5"/>
-                            <Setter TargetName="txt" Property="Foreground" Value="#000000"/>
+                            <Setter TargetName="ButtonLayout" Property="Background" Value="#E5E5E5"/>
+                            <Setter TargetName="txt" Property="Foreground" Value="#FF000000"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -68,12 +69,12 @@
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid Background="{TemplateBinding Background}" x:Name="LayoutRoot">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height ="34"/>
+                                <RowDefinition Height="Auto"/>
                                 <RowDefinition />
                             </Grid.RowDefinitions>
 
                             <!--Window chrome-->
-                            <Grid x:Name="PART_HeaderBar" Grid.Row="0" Background="#F999">
+                            <Grid x:Name="PART_HeaderBar" Grid.Row="0" Background="#FF189693">
                                 <DockPanel HorizontalAlignment="Left" VerticalAlignment="Center">
                                     <!--App icon-->
                                     <Image Source="{TemplateBinding Icon}" Width="18" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" />
@@ -82,17 +83,13 @@
 
                                 <!--Caption buttons-->
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
-                                    <Button Style="{StaticResource MinimizeButtonStyle}" ToolTip="Minimize"
-                                            Command="{x:Static SystemCommands.MinimizeWindowCommand}"/>
+                                    <Button x:Name="MinimizeButton" Style="{StaticResource MinimizeButtonStyle}" ToolTip="Minimize" />
 
-                                    <Button x:Name="RestoreButton" Visibility="Collapsed" Style="{StaticResource RestoreButtonStyle}" 
-                                            Command="{x:Static SystemCommands.RestoreWindowCommand}" ToolTip="Restore"/>
+                                    <Button x:Name="RestoreButton" Visibility="Collapsed" Style="{StaticResource RestoreButtonStyle}" ToolTip="Restore"/>
 
-                                    <Button x:Name="MaximizeButton" Visibility="Visible" Style="{StaticResource MaximizeButtonStyle}" 
-                                            Command="{x:Static SystemCommands.MaximizeWindowCommand}" ToolTip="Maximize" />
+                                    <Button x:Name="MaximizeButton" Visibility="Visible" Style="{StaticResource MaximizeButtonStyle}" ToolTip="Maximize" />
 
-                                    <Button Style="{StaticResource CloseButtonStyle}" ToolTip="Close" 
-                                            Command="{x:Static SystemCommands.CloseWindowCommand}"/>
+                                    <Button x:Name="CloseButton" Style="{StaticResource CloseButtonStyle}" ToolTip="Close" />
                                 </StackPanel>
                             </Grid>
 

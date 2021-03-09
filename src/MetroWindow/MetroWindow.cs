@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -37,35 +38,63 @@ namespace MetroWindow
 
             if (LayoutRoot != null && WindowState == WindowState.Maximized)
             {
-                //LayoutRoot.Margin = GetDefaultMarginForDpi();
+                LayoutRoot.Margin = GetDefaultMarginForDpi();
             }
 
             if (CloseButton != null)
             {
-                //CloseButton.Click += CloseButton_Click;
+                CloseButton.Click += delegate { Close(); };
             }
 
             if (MinimizeButton != null)
             {
-                //MinimizeButton.Click += MinimizeButton_Click;
+                MinimizeButton.Click += delegate { WindowState = WindowState.Minimized; };
             }
 
             if (RestoreButton != null)
             {
-               // RestoreButton.Click += RestoreButton_Click;
+                RestoreButton.Click += delegate { WindowState = WindowState.Normal; };
             }
 
             if (MaximizeButton != null)
             {
-               // MaximizeButton.Click += MaximizeButton_Click;
-            }
-
-            if (HeaderBar != null)
-            {
-                //HeaderBar.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(OnHeaderBarMouseLeftButtonDown));
+                MaximizeButton.Click += delegate { WindowState = WindowState.Maximized; };
             }
 
             base.OnApplyTemplate();
+        }
+
+        protected virtual Thickness GetDefaultMarginForDpi()
+        {
+            int currentDpi = GetCurrentDpi();
+            Thickness thickness = new Thickness(8, 8, 8, 8);
+            if (currentDpi == 120)
+            {
+                thickness = new Thickness(7, 7, 4, 5);
+            }
+            else if (currentDpi == 144)
+            {
+                thickness = new Thickness(7, 7, 3, 1);
+            }
+            else if (currentDpi == 168)
+            {
+                thickness = new Thickness(6, 6, 2, 0);
+            }
+            else if (currentDpi == 192)
+            {
+                thickness = new Thickness(6, 6, 0, 0);
+            }
+            else if (currentDpi == 240)
+            {
+                thickness = new Thickness(6, 6, 0, 0);
+            }
+            return thickness;
+        }
+
+        private static int GetCurrentDpi()
+        {
+            return (int)typeof(SystemParameters).GetProperty("Dpi", BindingFlags.Static | BindingFlags.NonPublic)
+                .GetValue(null, null);
         }
 
         private T GetRequiredTemplateChild<T>(string childName) where T : DependencyObject
@@ -90,5 +119,7 @@ namespace MetroWindow
                 MaximizeButton.Visibility = Visibility.Visible;
             }
         }
+        
+        
     }
 }
