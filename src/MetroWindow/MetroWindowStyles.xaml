@@ -53,14 +53,16 @@
     <Style TargetType="metroWindow:MetroWindow" x:Key="MetroWindowStyle">
         <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
         <Setter Property="Background" Value="White"/>
-        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+        <Setter Property="BorderBrush" Value="Teal"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
                 <WindowChrome GlassFrameThickness="1" 
-                              ResizeBorderThickness="4"
-                              CaptionHeight="34"/>
+                              ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
+                              UseAeroCaptionButtons="False"
+                              CaptionHeight="32" />
             </Setter.Value>
         </Setter>
         <Setter Property="Template">
@@ -72,21 +74,26 @@
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid Background="{TemplateBinding Background}" x:Name="LayoutRoot">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="30"/>
                                 <RowDefinition />
                             </Grid.RowDefinitions>
 
                             <!--Window chrome-->
-                            <Grid x:Name="PART_HeaderBar" Grid.Row="0" Background="#FF189693">
+                            <Grid x:Name="PART_HeaderBar" Grid.Row="0" 
+                                  Background="{TemplateBinding BorderBrush}"
+                                  Visibility="{TemplateBinding TitleBarVisibility}"
+                                  Height="30">
                                 <DockPanel HorizontalAlignment="Left" VerticalAlignment="Center">
                                     <!--App icon-->
-                                    <Image Source="{TemplateBinding Icon}" Width="18" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    <Image Source="{TemplateBinding Icon}" Width="18" Margin="4,2" 
+                                           HorizontalAlignment="Left" VerticalAlignment="Center" />
                                     <TextBlock Text="{Binding Title,RelativeSource={RelativeSource FindAncestor,AncestorType=Window}}" 
-                                               FontFamily="Arial" Margin="4 3 0 0" />
+                                               Visibility="{TemplateBinding TitleBarTextVisibility}"
+                                               FontFamily="Arial" Margin="4,3,0,0" />
                                 </DockPanel>
 
                                 <!--Caption buttons-->
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+                                <DockPanel HorizontalAlignment="Right" >
                                     <Button x:Name="MinimizeButton" Style="{StaticResource MinimizeButtonStyle}" ToolTip="Minimize" />
 
                                     <Button x:Name="RestoreButton" Visibility="Collapsed" Style="{StaticResource RestoreButtonStyle}" ToolTip="Restore"/>
@@ -94,7 +101,7 @@
                                     <Button x:Name="MaximizeButton" Visibility="Visible" Style="{StaticResource MaximizeButtonStyle}" ToolTip="Maximize" />
 
                                     <Button x:Name="CloseButton" Style="{StaticResource CloseButtonStyle}" ToolTip="Close" />
-                                </StackPanel>
+                                </DockPanel>
                             </Grid>
 
                             <!--App content-->

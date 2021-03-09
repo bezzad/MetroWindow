@@ -6,8 +6,9 @@
         xmlns:metroWindow="clr-namespace:MetroWindow;assembly=MetroWindow"
         mc:Ignorable="d"
         Icon="Resources/watermelon.ico"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid >
+        Title="Window Title" Height="450" Width="800"
+        ShowTitleBar="True" TitleBarTextVisibility="Collapsed">
+    <Grid>
         <Path Data="M50,0L100,50 50,100 0,50z" Fill="White" Stretch="Fill" Stroke="Black" StrokeThickness="2" />
     </Grid>
 </metroWindow:MetroWindow>

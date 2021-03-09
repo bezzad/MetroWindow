@@ -7,6 +7,12 @@ namespace MetroWindow
 {
     public class MetroWindow : Window
     {
+        public static readonly DependencyProperty TitleBarVisibilityProperty = DependencyProperty.Register(nameof(TitleBarVisibility), typeof(Visibility), typeof(MetroWindow), new PropertyMetadata(Visibility.Visible));
+        public static readonly DependencyProperty TitleBarTextVisibilityProperty = DependencyProperty.Register(nameof(TitleBarTextVisibility), typeof(Visibility), typeof(MetroWindow), new PropertyMetadata(default(Visibility)));
+        public static readonly DependencyProperty IgnoreTaskbarOnMaximizeProperty = DependencyProperty.Register(nameof(IgnoreTaskbarOnMaximize), typeof(bool), typeof(MetroWindow), new PropertyMetadata(default(bool)));
+
+        public double VirtualScreenWidth => SystemParameters.VirtualScreenWidth;
+        public double VirtualScreenHeight => SystemParameters.VirtualScreenHeight;
         public Border LayoutRootBorder { get; private set; }
         public Grid LayoutRoot { get; private set; }
         public Grid HeaderBar { get; private set; }
@@ -14,15 +20,35 @@ namespace MetroWindow
         public Button MaximizeButton { get; private set; }
         public Button RestoreButton { get; private set; }
         public Button CloseButton { get; private set; }
+        public Visibility TitleBarVisibility
+        {
+            get => (Visibility)GetValue(TitleBarVisibilityProperty);
+            set => SetValue(TitleBarVisibilityProperty, value);
+        }
+        public bool ShowTitleBar
+        {
+            get => TitleBarVisibility == Visibility.Visible;
+            set => TitleBarVisibility = value ? Visibility.Visible : Visibility.Collapsed;
+        }
+        public Visibility TitleBarTextVisibility
+        {
+            get => (Visibility)GetValue(TitleBarTextVisibilityProperty);
+            set => SetValue(TitleBarTextVisibilityProperty, value);
+        }
+        public bool IgnoreTaskbarOnMaximize
+        {
+            get => (bool)GetValue(IgnoreTaskbarOnMaximizeProperty);
+            set
+            {
+                SetValue(IgnoreTaskbarOnMaximizeProperty, value);
+                OnStateChanged(EventArgs.Empty);
+            }
+        }
 
 
         static MetroWindow()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MetroWindow), new FrameworkPropertyMetadata(typeof(MetroWindow)));
-        }
-
-        public MetroWindow()
-        {
         }
 
         public override void OnApplyTemplate()
@@ -110,15 +136,18 @@ namespace MetroWindow
                 LayoutRootBorder.BorderThickness = new Thickness(8);
                 RestoreButton.Visibility = Visibility.Visible;
                 MaximizeButton.Visibility = Visibility.Collapsed;
+                if (IgnoreTaskbarOnMaximize)
+                {
+                    ShowInTaskbar = false;
+                }
             }
             else
             {
                 LayoutRootBorder.BorderThickness = new Thickness(0);
                 RestoreButton.Visibility = Visibility.Collapsed;
                 MaximizeButton.Visibility = Visibility.Visible;
+                ShowInTaskbar = true;
             }
         }
-
-
     }
 }
