@@ -10,7 +10,9 @@ namespace MetroWindow
         public static readonly DependencyProperty TitleBarVisibilityProperty = DependencyProperty.Register(nameof(TitleBarVisibility), typeof(Visibility), typeof(MetroWindow), new PropertyMetadata(Visibility.Visible));
         public static readonly DependencyProperty TitleBarTextVisibilityProperty = DependencyProperty.Register(nameof(TitleBarTextVisibility), typeof(Visibility), typeof(MetroWindow), new PropertyMetadata(default(Visibility)));
         public static readonly DependencyProperty IgnoreTaskbarOnMaximizeProperty = DependencyProperty.Register(nameof(IgnoreTaskbarOnMaximize), typeof(bool), typeof(MetroWindow), new PropertyMetadata(default(bool)));
+        public static readonly DependencyProperty IsFullscreenProperty = DependencyProperty.Register(nameof(IsFullscreen), typeof(bool), typeof(MetroWindow), new PropertyMetadata(default(bool)));
 
+        private WindowState _lastWindowState;
         public double VirtualScreenWidth => SystemParameters.VirtualScreenWidth;
         public double VirtualScreenHeight => SystemParameters.VirtualScreenHeight;
         public Border LayoutRootBorder { get; private set; }
@@ -44,7 +46,15 @@ namespace MetroWindow
                 OnStateChanged(EventArgs.Empty);
             }
         }
-
+        public bool IsFullscreen
+        {
+            get => (bool)GetValue(IsFullscreenProperty);
+            set
+            {
+                SetValue(IsFullscreenProperty, value);
+                OnIsFullscreenChanged();
+            }
+        }
 
         static MetroWindow()
         {
@@ -60,11 +70,6 @@ namespace MetroWindow
             RestoreButton = GetRequiredTemplateChild<Button>("RestoreButton");
             CloseButton = GetRequiredTemplateChild<Button>("CloseButton");
             HeaderBar = GetRequiredTemplateChild<Grid>("PART_HeaderBar");
-
-            if (LayoutRoot != null && WindowState == WindowState.Maximized)
-            {
-                LayoutRoot.Margin = GetDefaultMarginForDpi();
-            }
 
             if (CloseButton != null)
             {
@@ -133,21 +138,47 @@ namespace MetroWindow
 
             if (WindowState == WindowState.Maximized)
             {
-                LayoutRootBorder.BorderThickness = new Thickness(8);
                 RestoreButton.Visibility = Visibility.Visible;
                 MaximizeButton.Visibility = Visibility.Collapsed;
-                if (IgnoreTaskbarOnMaximize)
+                ShowInTaskbar = !IgnoreTaskbarOnMaximize;
+                if (LayoutRoot != null)
                 {
-                    ShowInTaskbar = false;
+                    LayoutRoot.Margin = GetDefaultMarginForDpi();
                 }
             }
             else
             {
-                LayoutRootBorder.BorderThickness = new Thickness(0);
                 RestoreButton.Visibility = Visibility.Collapsed;
                 MaximizeButton.Visibility = Visibility.Visible;
                 ShowInTaskbar = true;
+                if (LayoutRoot != null)
+                {
+                    LayoutRoot.Margin = new Thickness(0);
+                }
             }
+        }
+
+        private void OnIsFullscreenChanged()
+        {
+            Topmost = true;
+            
+            if (IsFullscreen)
+            {
+                _lastWindowState = WindowState;
+                SystemCommands.RestoreWindow(this); // Note: restore maximized windows
+                WindowStyle = WindowStyle.None;
+                ShowTitleBar = false;
+                SystemCommands.MaximizeWindow(this);
+            }
+            else
+            {
+                WindowStyle = WindowStyle.SingleBorderWindow;
+                ShowTitleBar = true;
+                WindowState = _lastWindowState;
+            }
+
+            Topmost = false; // disabled top most to allow show notification on this window
+            Activate();
         }
     }
 }
