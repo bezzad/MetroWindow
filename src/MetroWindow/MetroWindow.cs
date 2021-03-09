@@ -2,7 +2,6 @@
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace MetroWindow
 {
@@ -119,7 +118,7 @@ namespace MetroWindow
                 MaximizeButton.Visibility = Visibility.Visible;
             }
         }
-        
-        
+
+
     }
 }
