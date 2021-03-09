@@ -1,0 +1,15 @@
+﻿<Application x:Class="MetroWindowSample.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:metroWindowSample="clr-namespace:MetroWindowSample"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MetroWindow;component/MetroWindowStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="metroWindowSample:MainWindow" BasedOn="{StaticResource MetroWindowStyle}"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
