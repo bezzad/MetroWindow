@@ -14,6 +14,7 @@ namespace MetroWindow
         public static readonly DependencyProperty IgnoreTaskbarOnMaximizeProperty = DependencyProperty.Register(nameof(IgnoreTaskbarOnMaximize), typeof(bool), typeof(MetroWindow), new PropertyMetadata(default(bool)));
         public static readonly DependencyProperty IsFullscreenProperty = DependencyProperty.Register(nameof(IsFullscreen), typeof(bool), typeof(MetroWindow), new PropertyMetadata(default(bool)));
         public static readonly DependencyProperty DeactivatedTitleBarBrushProperty = DependencyProperty.Register(nameof(DeactivatedTitleBarBrush), typeof(Brush), typeof(MetroWindow), new PropertyMetadata(default(Brush)));
+        public static readonly DependencyProperty WindowTitleBrushProperty = DependencyProperty.Register(nameof(WindowTitleBrush), typeof(Brush), typeof(MetroWindow), new PropertyMetadata(default(Brush)));
 
         private WindowState _lastWindowState;
         public double VirtualScreenWidth => SystemParameters.VirtualScreenWidth;
@@ -67,6 +68,11 @@ namespace MetroWindow
         {
             get => (Brush)GetValue(TitleBarBrushProperty);
             set => SetValue(TitleBarBrushProperty, value);
+        }
+        public Brush WindowTitleBrush
+        {
+            get => (Brush)GetValue(WindowTitleBrushProperty);
+            set => SetValue(WindowTitleBrushProperty, value);
         }
 
         static MetroWindow()

@@ -56,6 +56,7 @@
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
         <Setter Property="DeactivatedTitleBarBrush" Value="Gray"/>
         <Setter Property="BorderBrush" Value="Teal"/>
+        <Setter Property="WindowTitleBrush" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
         <Setter Property="WindowChrome.WindowChrome">
@@ -89,6 +90,7 @@
                                     <Image Source="{TemplateBinding Icon}" Width="18" Margin="4,2" 
                                            HorizontalAlignment="Left" VerticalAlignment="Center" />
                                     <TextBlock Text="{Binding Title,RelativeSource={RelativeSource FindAncestor,AncestorType=Window}}" 
+                                               Foreground="{TemplateBinding WindowTitleBrush}"
                                                Visibility="{TemplateBinding TitleBarTextVisibility}"
                                                FontFamily="Arial" Margin="4,3,0,0" />
                                 </DockPanel>
