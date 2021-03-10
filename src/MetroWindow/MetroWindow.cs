@@ -2,15 +2,18 @@
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace MetroWindow
 {
     public class MetroWindow : Window
     {
+        public static readonly DependencyProperty TitleBarBrushProperty = DependencyProperty.Register(nameof(TitleBarBrush), typeof(Brush), typeof(MetroWindow), new PropertyMetadata(default(Brush)));
         public static readonly DependencyProperty TitleBarVisibilityProperty = DependencyProperty.Register(nameof(TitleBarVisibility), typeof(Visibility), typeof(MetroWindow), new PropertyMetadata(Visibility.Visible));
         public static readonly DependencyProperty TitleBarTextVisibilityProperty = DependencyProperty.Register(nameof(TitleBarTextVisibility), typeof(Visibility), typeof(MetroWindow), new PropertyMetadata(default(Visibility)));
         public static readonly DependencyProperty IgnoreTaskbarOnMaximizeProperty = DependencyProperty.Register(nameof(IgnoreTaskbarOnMaximize), typeof(bool), typeof(MetroWindow), new PropertyMetadata(default(bool)));
         public static readonly DependencyProperty IsFullscreenProperty = DependencyProperty.Register(nameof(IsFullscreen), typeof(bool), typeof(MetroWindow), new PropertyMetadata(default(bool)));
+        public static readonly DependencyProperty DeactivatedTitleBarBrushProperty = DependencyProperty.Register(nameof(DeactivatedTitleBarBrush), typeof(Brush), typeof(MetroWindow), new PropertyMetadata(default(Brush)));
 
         private WindowState _lastWindowState;
         public double VirtualScreenWidth => SystemParameters.VirtualScreenWidth;
@@ -55,6 +58,16 @@ namespace MetroWindow
                 OnIsFullscreenChanged();
             }
         }
+        public Brush DeactivatedTitleBarBrush
+        {
+            get => (Brush)GetValue(DeactivatedTitleBarBrushProperty);
+            set => SetValue(DeactivatedTitleBarBrushProperty, value);
+        }
+        public Brush TitleBarBrush
+        {
+            get => (Brush)GetValue(TitleBarBrushProperty);
+            set => SetValue(TitleBarBrushProperty, value);
+        }
 
         static MetroWindow()
         {
@@ -94,6 +107,44 @@ namespace MetroWindow
             base.OnApplyTemplate();
         }
 
+        protected override void OnDeactivated(EventArgs e)
+        {
+            base.OnDeactivated(e);
+            TitleBarBrush = DeactivatedTitleBarBrush;
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            TitleBarBrush = BorderBrush;
+        }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            base.OnStateChanged(e);
+
+            if (WindowState == WindowState.Maximized)
+            {
+                RestoreButton.Visibility = Visibility.Visible;
+                MaximizeButton.Visibility = Visibility.Collapsed;
+                ShowInTaskbar = !IgnoreTaskbarOnMaximize;
+                if (LayoutRoot != null)
+                {
+                    LayoutRoot.Margin = GetDefaultMarginForDpi();
+                }
+            }
+            else
+            {
+                RestoreButton.Visibility = Visibility.Collapsed;
+                MaximizeButton.Visibility = Visibility.Visible;
+                ShowInTaskbar = true;
+                if (LayoutRoot != null)
+                {
+                    LayoutRoot.Margin = new Thickness(0);
+                }
+            }
+        }
+
         protected virtual Thickness GetDefaultMarginForDpi()
         {
             int currentDpi = GetCurrentDpi();
@@ -130,32 +181,6 @@ namespace MetroWindow
         private T GetRequiredTemplateChild<T>(string childName) where T : DependencyObject
         {
             return (T)GetTemplateChild(childName);
-        }
-
-        protected override void OnStateChanged(EventArgs e)
-        {
-            base.OnStateChanged(e);
-
-            if (WindowState == WindowState.Maximized)
-            {
-                RestoreButton.Visibility = Visibility.Visible;
-                MaximizeButton.Visibility = Visibility.Collapsed;
-                ShowInTaskbar = !IgnoreTaskbarOnMaximize;
-                if (LayoutRoot != null)
-                {
-                    LayoutRoot.Margin = GetDefaultMarginForDpi();
-                }
-            }
-            else
-            {
-                RestoreButton.Visibility = Visibility.Collapsed;
-                MaximizeButton.Visibility = Visibility.Visible;
-                ShowInTaskbar = true;
-                if (LayoutRoot != null)
-                {
-                    LayoutRoot.Margin = new Thickness(0);
-                }
-            }
         }
 
         private void OnIsFullscreenChanged()

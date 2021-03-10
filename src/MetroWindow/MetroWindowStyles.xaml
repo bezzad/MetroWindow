@@ -54,6 +54,7 @@
         <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
         <Setter Property="Background" Value="White"/>
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+        <Setter Property="DeactivatedTitleBarBrush" Value="Gray"/>
         <Setter Property="BorderBrush" Value="Teal"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
@@ -70,7 +71,7 @@
                 <ControlTemplate TargetType="{x:Type metroWindow:MetroWindow}">
                     <Border x:Name="LayoutRootBorder"
                             Background="{TemplateBinding Background}" 
-                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderBrush="{TemplateBinding TitleBarBrush}" 
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid Background="{TemplateBinding Background}" x:Name="LayoutRoot">
                             <Grid.RowDefinitions>
@@ -80,7 +81,7 @@
 
                             <!--Window chrome-->
                             <Grid x:Name="PART_HeaderBar" Grid.Row="0" 
-                                  Background="{TemplateBinding BorderBrush}"
+                                  Background="{TemplateBinding TitleBarBrush}"
                                   Visibility="{TemplateBinding TitleBarVisibility}"
                                   Height="30">
                                 <DockPanel HorizontalAlignment="Left" VerticalAlignment="Center">
