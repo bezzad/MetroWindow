@@ -3,6 +3,7 @@
 WPF light Metro Window
 
 ### Sample View
+![sample-view](https://github.com/bezzad/MetroWindow/raw/main/sample.png)
 
 ### Sample Window XAML
 
