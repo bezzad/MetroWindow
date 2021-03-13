@@ -59,12 +59,13 @@
         <Setter Property="WindowTitleBrush" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="{Binding IsFullScreen, Mode=OneWay}"/>
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
-                <WindowChrome GlassFrameThickness="1" 
+                <WindowChrome GlassFrameThickness="1"
                               ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
                               UseAeroCaptionButtons="False"
-                              CaptionHeight="32" />
+                              CaptionHeight="32"/>
             </Setter.Value>
         </Setter>
         <Setter Property="Template">
@@ -74,18 +75,14 @@
                             Background="{TemplateBinding Background}" 
                             BorderBrush="{TemplateBinding TitleBarBrush}" 
                             BorderThickness="{TemplateBinding BorderThickness}">
-                        <Grid Background="{TemplateBinding Background}" x:Name="LayoutRoot">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
+                        <DockPanel Background="{TemplateBinding Background}" x:Name="LayoutRoot">
 
                             <!--Window chrome-->
-                            <Grid x:Name="PART_HeaderBar" Grid.Row="0" 
+                            <Grid x:Name="PART_HeaderBar" 
+                                  DockPanel.Dock="Top" Height="30"
                                   Background="{TemplateBinding TitleBarBrush}"
-                                  Visibility="{TemplateBinding TitleBarVisibility}"
-                                  Height="30">
-                                <DockPanel HorizontalAlignment="Left" VerticalAlignment="Center">
+                                  Visibility="{TemplateBinding TitleBarVisibility}">
+                                <DockPanel HorizontalAlignment="Left" VerticalAlignment="Center" >
                                     <!--App icon-->
                                     <Image Source="{TemplateBinding Icon}" Width="18" Margin="4,2" 
                                            HorizontalAlignment="Left" VerticalAlignment="Center" />
@@ -108,12 +105,15 @@
                             </Grid>
 
                             <!--App content-->
-                            <ContentPresenter 
-                                Grid.Row="1" 
-                                Content="{TemplateBinding Content}" 
-                                ContentTemplate="{TemplateBinding ContentTemplate}"/>
-                        </Grid>
+                            <ContentPresenter Content="{TemplateBinding Content}" 
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </DockPanel>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFullscreen" Value="True">
+                            <Setter TargetName="PART_HeaderBar" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

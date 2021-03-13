@@ -20,7 +20,7 @@ namespace MetroWindow
         public double VirtualScreenWidth => SystemParameters.VirtualScreenWidth;
         public double VirtualScreenHeight => SystemParameters.VirtualScreenHeight;
         public Border LayoutRootBorder { get; private set; }
-        public Grid LayoutRoot { get; private set; }
+        public DockPanel LayoutRoot { get; private set; }
         public Grid HeaderBar { get; private set; }
         public Button MinimizeButton { get; private set; }
         public Button MaximizeButton { get; private set; }
@@ -83,7 +83,7 @@ namespace MetroWindow
         public override void OnApplyTemplate()
         {
             LayoutRootBorder = GetRequiredTemplateChild<Border>("LayoutRootBorder");
-            LayoutRoot = GetRequiredTemplateChild<Grid>("LayoutRoot");
+            LayoutRoot = GetRequiredTemplateChild<DockPanel>("LayoutRoot");
             MinimizeButton = GetRequiredTemplateChild<Button>("MinimizeButton");
             MaximizeButton = GetRequiredTemplateChild<Button>("MaximizeButton");
             RestoreButton = GetRequiredTemplateChild<Button>("RestoreButton");
@@ -200,13 +200,11 @@ namespace MetroWindow
                 _lastWindowState = WindowState;
                 SystemCommands.RestoreWindow(this); // Note: restore maximized windows
                 WindowStyle = WindowStyle.None;
-                ShowTitleBar = false;
                 SystemCommands.MaximizeWindow(this);
             }
             else
             {
                 WindowStyle = WindowStyle.SingleBorderWindow;
-                ShowTitleBar = true;
                 WindowState = _lastWindowState;
             }
 
