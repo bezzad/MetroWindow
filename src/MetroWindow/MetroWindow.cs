@@ -154,10 +154,10 @@ namespace MetroWindow
         protected virtual Thickness GetDefaultMarginForDpi()
         {
             int currentDpi = GetCurrentDpi();
-            Thickness thickness = new Thickness(8, 8, 8, 8);
+            Thickness thickness = new Thickness(8);
             if (currentDpi == 120)
             {
-                thickness = new Thickness(7, 7, 4, 5);
+                thickness = new Thickness(5);
             }
             else if (currentDpi == 144)
             {

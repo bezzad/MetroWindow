@@ -76,7 +76,7 @@
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid Background="{TemplateBinding Background}" x:Name="LayoutRoot">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="Auto"/>
                                 <RowDefinition />
                             </Grid.RowDefinitions>
 

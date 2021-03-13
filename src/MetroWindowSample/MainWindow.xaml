@@ -10,8 +10,8 @@
         Height="450" Width="800"
         ShowTitleBar="True" 
         TitleBarTextVisibility="Visible"
-        WindowTitleBrush="Chartreuse">
-    <Grid>
+        WindowTitleBrush="Thistle">
+    <Grid Background="Gray">
         <Path Data="M50,0L100,50 50,100 0,50z" Fill="White" Stretch="Fill" Stroke="Black" StrokeThickness="2" />
         <ToggleButton Content="Is FullScreen ?" IsChecked="{Binding Fullscreen}" Width="100"  Height="100"/>
     </Grid>
