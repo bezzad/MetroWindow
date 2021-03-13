@@ -180,8 +180,10 @@ namespace MetroWindow
 
         private static int GetCurrentDpi()
         {
-            return (int)typeof(SystemParameters).GetProperty("Dpi", BindingFlags.Static | BindingFlags.NonPublic)
-                .GetValue(null, null);
+            var sysParamsType = typeof(SystemParameters);
+            var dpiProperty = sysParamsType.GetProperty("Dpi", BindingFlags.Static | BindingFlags.NonPublic);
+            var dpiValue = dpiProperty?.GetValue(null, null) as int?;
+            return dpiValue ?? 96;
         }
 
         private T GetRequiredTemplateChild<T>(string childName) where T : DependencyObject

@@ -55,7 +55,7 @@
         <Setter Property="Background" Value="White"/>
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
         <Setter Property="DeactivatedTitleBarBrush" Value="Gray"/>
-        <Setter Property="BorderBrush" Value="Teal"/>
+        <Setter Property="BorderBrush" Value="#189693"/>
         <Setter Property="WindowTitleBrush" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>

@@ -6,8 +6,11 @@
         xmlns:metroWindow="clr-namespace:MetroWindow;assembly=MetroWindow"
         mc:Ignorable="d"
         Icon="Resources/watermelon.ico"
-        Title="Window Title" Height="450" Width="800"
-        ShowTitleBar="True" TitleBarTextVisibility="Visible">
+        Title="Window Title" 
+        Height="450" Width="800"
+        ShowTitleBar="True" 
+        TitleBarTextVisibility="Visible"
+        WindowTitleBrush="Chartreuse">
     <Grid>
         <Path Data="M50,0L100,50 50,100 0,50z" Fill="White" Stretch="Fill" Stroke="Black" StrokeThickness="2" />
         <ToggleButton Content="Is FullScreen ?" IsChecked="{Binding Fullscreen}" Width="100"  Height="100"/>
